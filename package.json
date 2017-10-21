@@ -13,7 +13,10 @@
     "type": "git",
     "url": "https://github.com/qaraluch/qm-yt-api.git"
   },
-  "files": ["dist/", "src/"],
+  "files": [
+    "dist/",
+    "src/"
+  ],
   "main": "./dist/index.js",
   "module": "./src/index.js",
   "scripts": {
@@ -37,10 +40,14 @@
         }
       ]
     ],
-    "plugins": ["transform-runtime"]
+    "plugins": [
+      "transform-runtime"
+    ]
   },
   "ava": {
-    "require": ["babel-register"],
+    "require": [
+      "babel-register"
+    ],
     "babel": "inherit"
   },
   "devDependencies": {
@@ -55,6 +62,7 @@
     "prettier": "1.7.4"
   },
   "dependencies": {
-    "babel-runtime": "6.26.0"
+    "babel-runtime": "6.26.0",
+    "googleapis": "22.2.0"
   }
 }
