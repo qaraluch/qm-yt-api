@@ -1,11 +1,11 @@
 import test from "ava";
 import ytAPI from "../dist/index.js";
 import credentials from "../test/.key.json";
-import touch from "qm-fs-touch";
 
 // Tests are made against real YT data!
 const key = credentials.key;
 const playlist = credentials.playlist;
+const playlistLong = credentials.playlistLong;
 const video = credentials.video;
 
 test("check credentials", t => {

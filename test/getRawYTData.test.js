@@ -4,7 +4,7 @@ import credentials from "../test/.key.json";
 import touch from "qm-fs-touch";
 
 const key = credentials.key;
-const playlist = credentials.playlist;
+const playlist = credentials.playlistLong;
 
 test.skip("check credentials", t => {
   const msg1 = "should load api key";
@@ -25,7 +25,7 @@ test.skip("Save raw YT API data for reference", async t => {
   const data = await ytAPI.getVideosInfoFromPlaylist(key, playlist, {
     rawApiData: true
   });
-  await touch("./test/temp.json", JSON.stringify(data, null, 2), {
+  await touch("./test/temp-long.json", JSON.stringify(data, null, 2), {
     overwrite: true
   });
   t.deepEqual(1, 1);
