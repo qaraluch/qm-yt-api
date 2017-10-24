@@ -81,8 +81,15 @@ const processYTdata = (playlistId, playListInfo, videosInfo) => {
 const getVideosInfoFromPlaylist = async (
   apiKey,
   playlistId,
+  options,
   apiOptions = {}
 ) => {
+  const defaultOptions = {
+    //TODOC: module options
+    rawApiData: false
+  };
+  const endOptions = Object.assign({}, defaultOptions, options);
+
   const endApiOptionsForVideosInfo = margeOptions(
     getDefaultOptionsForVideosInfo(playlistId),
     apiOptions
@@ -102,12 +109,9 @@ const getVideosInfoFromPlaylist = async (
       apiKey,
       endApiOptionsForVideosInfo
     );
-
-    // return [playListInfo, videosInfo]; //TODO: raw data from YT API - add flag
-    // console.log("videosInfo[1] ", videosInfo);
-
-    // process info
-    return processYTdata(playlistId, playListInfo, videosInfo);
+    return endOptions.rawApiData
+      ? { playListInfo, videosInfo }
+      : processYTdata(playlistId, playListInfo, videosInfo);
   } catch (error) {
     mainErr(error);
   }

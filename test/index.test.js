@@ -62,3 +62,12 @@ test("getVideosInfoFromPlaylist() - get videos info from YT playlist", async t =
   const expected = expectedInfoFromPlaylis;
   t.deepEqual(actual, expected, msg);
 });
+
+test("getVideosInfoFromPlaylist() - get raw YT Api data", async t => {
+  const msg = "should get raw YT Api data";
+  const actual = await ytAPI.getVideosInfoFromPlaylist(key, playlist, {
+    rawApiData: true
+  });
+  const expected = "youtube#playlistListResponse";
+  t.deepEqual(actual.playListInfo[1].kind, expected, msg);
+});
