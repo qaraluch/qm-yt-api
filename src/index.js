@@ -100,15 +100,10 @@ const getVideosInfoFromPlaylist = async (
   );
   try {
     // get info from yt api
-    // TODO: concurrent for better performance ?
-    const playListInfo = await asyncGetPlaylistInfo(
-      apiKey,
-      endApiOptionsForPlayListInfo
-    );
-    const videosInfo = await asyncGetVideosInfo(
-      apiKey,
-      endApiOptionsForVideosInfo
-    );
+    let [playListInfo, videosInfo] = await Promise.all([
+      await asyncGetPlaylistInfo(apiKey, endApiOptionsForPlayListInfo),
+      await asyncGetVideosInfo(apiKey, endApiOptionsForVideosInfo)
+    ]);
     return endOptions.rawApiData
       ? { playListInfo, videosInfo }
       : processYTdata(playlistId, playListInfo, videosInfo);
