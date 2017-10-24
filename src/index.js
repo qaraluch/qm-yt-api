@@ -46,11 +46,13 @@ const margeOptions = (defaultOptions, passedOptions) =>
 
 const getDefaultOptionsForVideosInfo = playlistId => ({
   part: "snippet, contentDetails",
+  maxResults: 50,
   playlistId
 });
 
 const getDefaultOptionsForPlayListInfo = playlistId => ({
   part: "snippet, contentDetails",
+  maxResults: 50,
   id: playlistId
 });
 
@@ -81,7 +83,7 @@ const processYTdata = (playlistId, playListInfo, videosInfo) => {
 const getVideosInfoFromPlaylist = async (
   apiKey,
   playlistId,
-  options,
+  options = {},
   apiOptions = {}
 ) => {
   const defaultOptions = {
