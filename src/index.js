@@ -77,7 +77,8 @@ const processData = dataObject => {
   const pullVidiosInfo = obj => ({
     position: obj.snippet.position,
     id: obj.contentDetails.videoId,
-    title: obj.snippet.title
+    title: obj.snippet.title,
+    publishedAt: obj.snippet.publishedAt
   });
   const processVideosInfo = videosInfo.map(
     arr => arr[1] && arr[1].items.map(pullVidiosInfo)

@@ -83,6 +83,10 @@ test("getVideosInfoFromPlaylist() - get videos info from **flong** YT playlist",
   t.deepEqual(actual, expected, msg);
 });
 
+// test.only("only - skip all test in this file", t => {
+//   t.pass();
+// });
+
 // test.only("--------------> dev", async t => {
 //   const returnData = await ytAPI.getVideosInfoFromPlaylist(key, playlistLong);
 //   await touch("./test/dev.json", JSON.stringify(returnData, null, 2), {
