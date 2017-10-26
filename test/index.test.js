@@ -1,6 +1,7 @@
 import test from "ava";
 import ytAPI from "../dist/index.js";
 import credentials from "../test/.key.json";
+import touch from "qm-fs-touch";
 
 // Tests are made against real YT data!
 const key = credentials.key;
@@ -59,6 +60,7 @@ const expectedInfoFromPlaylis = {
 test("getVideosInfoFromPlaylist() - get videos info from YT playlist", async t => {
   const msg = "should get videos info from YT playlist";
   const actual = await ytAPI.getVideosInfoFromPlaylist(key, playlist);
+  delete actual.askDate;
   const expected = expectedInfoFromPlaylis;
   t.deepEqual(actual, expected, msg);
 });
@@ -71,3 +73,21 @@ test("getVideosInfoFromPlaylist() - get raw YT Api data", async t => {
   const expected = "youtube#playlistListResponse";
   t.deepEqual(actual.playListInfo[1].kind, expected, msg);
 });
+
+test("getVideosInfoFromPlaylist() - get videos info from **flong** YT playlist", async t => {
+  const msg = "should get videos count from long YT playlist (60)";
+  // check if correct -> https://www.youtube.com/playlist?list=PLwJS-G75vM7kFO-yUkyNphxSIdbi_1NKX
+  const data = await ytAPI.getVideosInfoFromPlaylist(key, playlistLong);
+  const actual = data && data.videos.length;
+  const expected = 60;
+  t.deepEqual(actual, expected, msg);
+});
+
+// test.only("--------------> dev", async t => {
+//   const returnData = await ytAPI.getVideosInfoFromPlaylist(key, playlistLong);
+//   await touch("./test/dev.json", JSON.stringify(returnData, null, 2), {
+//     overwrite: true
+//   });
+//   console.log("written data to ./test/dev.json");
+//   t.deepEqual(1, 1);
+// });

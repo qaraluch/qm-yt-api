@@ -1,4 +1,6 @@
 node_modules
+.vscode
 dist
 test/.key.json
-test/temp*.json
+test/dump-*.json
+test/dev.json

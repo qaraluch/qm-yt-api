@@ -21,11 +21,21 @@ test.skip("check credentials", t => {
   t.is(actual3, expected3, msg3);
 });
 
+test.skip("Save porcessed YT API data for reference", async t => {
+  const data = await ytAPI.getVideosInfoFromPlaylist(key, playlist, {
+    rawApiData: false
+  });
+  await touch("./test/dump-YTAPIdata.json", JSON.stringify(data, null, 2), {
+    overwrite: true
+  });
+  t.deepEqual(1, 1);
+});
+
 test.skip("Save raw YT API data for reference", async t => {
   const data = await ytAPI.getVideosInfoFromPlaylist(key, playlist, {
     rawApiData: true
   });
-  await touch("./test/temp-long.json", JSON.stringify(data, null, 2), {
+  await touch("./test/dump-rawYTAPIdata.json", JSON.stringify(data, null, 2), {
     overwrite: true
   });
   t.deepEqual(1, 1);
