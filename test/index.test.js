@@ -46,12 +46,14 @@ const expectedInfoFromPlaylis = {
     {
       position: 0,
       id: "8CrOL-ydFMI",
+      publishedAt: "2017-10-21T16:44:15.000Z",
       title:
         "This Is Water - Full version-David Foster Wallace Commencement Speech"
     },
     {
       position: 1,
       id: "RnGvWTRQ9j4",
+      publishedAt: "2017-10-21T16:44:59.000Z",
       title: "Everyday Virtue | Paterson & David Foster Wallace"
     }
   ]
