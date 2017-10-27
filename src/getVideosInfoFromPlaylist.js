@@ -35,19 +35,32 @@ const processVideosData = dataObject => {
   return dataProcessed;
 };
 
+const getEndApiOptionsForPlayListInfo = (playlistId, apiOptions) =>
+  margeOptions(getDefaultOptionsForPlayListInfo(playlistId), apiOptions);
+
 const addRawDataFromPlaylistInfo = async res => {
   res.playListInfo = await callPlaylistInfo(
     res.apiKey,
-    res.endApiOptionsForPlayListInfo
+    res.getEndApiOptionsForPlayListInfo(res.playlistId, res.apiOptions)
   );
   return res;
 };
+
+const getEndApiOptionsForVideosInfo = (playlistId, apiOptions, nextPageToken) =>
+  margeOptions(
+    getDefaultOptionsForVideosInfo(playlistId, nextPageToken),
+    apiOptions
+  );
 
 const getRawDataFromVideosInfo = async res => {
   const apiInfo = [];
   const endApiOptions = res.getEndApiOptionsForVideosInfo(res.playlistId);
   const nextEndApiOptions = nextPageToken =>
-    res.getEndApiOptionsForVideosInfo(res.playlistId, nextPageToken);
+    res.getEndApiOptionsForVideosInfo(
+      res.playlistId,
+      res.apiOptions,
+      nextPageToken
+    );
   // next call depends on page token of beforehand call!
   async function recursionAPICall(endApiOptions) {
     const callAPI = await callVideosInfo(res.apiKey, endApiOptions);
@@ -72,24 +85,13 @@ const getVideosInfoFromPlaylist = async (
   };
   const endOptions = Object.assign({}, defaultOptions, options);
 
-  const getEndApiOptionsForVideosInfo = (playlistId, nextPageToken) => {
-    return margeOptions(
-      getDefaultOptionsForVideosInfo(playlistId, nextPageToken),
-      apiOptions
-    );
-  };
-
-  const endApiOptionsForPlayListInfo = margeOptions(
-    getDefaultOptionsForPlayListInfo(playlistId),
-    apiOptions
-  );
-
   try {
     // get info from yt api
     let allRawData = await Promise.resolve({
+      apiOptions,
       playlistId,
       apiKey,
-      endApiOptionsForPlayListInfo,
+      getEndApiOptionsForPlayListInfo,
       getEndApiOptionsForVideosInfo
     })
       .then(addRawDataFromPlaylistInfo)
