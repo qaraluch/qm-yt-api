@@ -73,7 +73,7 @@ test("getVideosInfoFromPlaylist() - get raw YT Api data", async t => {
     rawApiData: true
   });
   const expected = "youtube#playlistListResponse";
-  t.deepEqual(actual.playListInfo[1].kind, expected, msg);
+  t.is(actual.playListInfo[1].kind, expected, msg);
 });
 
 test("getVideosInfoFromPlaylist() - get videos info from **flong** YT playlist", async t => {
@@ -82,6 +82,19 @@ test("getVideosInfoFromPlaylist() - get videos info from **flong** YT playlist",
   const data = await ytAPI.getVideosInfoFromPlaylist(key, playlistLong);
   const actual = data && data.videos.length;
   const expected = 60;
+  t.is(actual, expected, msg);
+});
+
+const expectedVideoInfo = {
+  id: "8CrOL-ydFMI",
+  title: "This Is Water - Full version-David Foster Wallace Commencement Speech"
+};
+
+test("getVideoInfo() - get video info from YT", async t => {
+  const msg = "should get video info";
+  const data = await ytAPI.getVideoInfo(key, video);
+  const actual = data;
+  const expected = expectedVideoInfo;
   t.deepEqual(actual, expected, msg);
 });
 
@@ -90,7 +103,7 @@ test("getVideosInfoFromPlaylist() - get videos info from **flong** YT playlist",
 // });
 
 // test.only("--------------> dev", async t => {
-//   const returnData = await ytAPI.getVideosInfoFromPlaylist(key, playlistLong);
+//   const returnData = await ytAPI.getVideoInfo(key, video);
 //   await touch("./test/dev.json", JSON.stringify(returnData, null, 2), {
 //     overwrite: true
 //   });

@@ -33,6 +33,14 @@ const callVideosInfo = (apiKey, endApiOptions) => {
   });
 };
 
+const callVideoInfo = (apiKey, endApiOptions) => {
+  return new Promise((resolve, reject) => {
+    const ytAPI = returnYTapi(apiKey);
+    // API info: https://developers.google.com/apis-explorer/#p/youtube/v3/youtube.videos.list
+    return ytAPI.videos.list(endApiOptions, returnApiCB(reject, resolve));
+  });
+};
+
 const callPlaylistInfo = (apiKey, endApiOptions) => {
   return new Promise((resolve, reject) => {
     const ytAPI = returnYTapi(apiKey);
@@ -57,6 +65,11 @@ const getDefaultOptionsForPlayListInfo = playlistId => ({
   id: playlistId
 });
 
+const getDefaultOptionsForVideoInfo = videoId => ({
+  part: "snippet, contentDetails",
+  id: videoId
+});
+
 const getNextPageToken = apiResponse =>
   apiResponse[1] &&
   apiResponse[1].nextPageToken &&
@@ -65,7 +78,9 @@ const getNextPageToken = apiResponse =>
 export {
   callPlaylistInfo,
   callVideosInfo,
+  callVideoInfo,
   getDefaultOptionsForPlayListInfo,
   getDefaultOptionsForVideosInfo,
+  getDefaultOptionsForVideoInfo,
   getNextPageToken
 };
