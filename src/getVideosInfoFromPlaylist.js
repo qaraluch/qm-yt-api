@@ -11,7 +11,6 @@ import {
 // - property playListInfo: [errData, reqData, resData]
 // - property videosInfo: [ [errData, reqData, resData], ...[]]
 const processVideosData = dataObject => {
-  // let errInfos; //TODO: implement err mgmt
   const playListInfo = dataObject.playListInfo[1];
   const playlistId = dataObject.playlistId;
   const videosInfo = dataObject.viedosInfo;

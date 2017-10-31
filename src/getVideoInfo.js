@@ -24,8 +24,7 @@ function bubbleUpApiErrors(res) {
 // Data structure of dataObject:
 // - property videoInfo: [errData, reqData, resData]
 const processVideoData = dataObject => {
-  // let errInfos; //TODO: implement err mgmt
-  const video = dataObject.videoInfo[1].items[0]; //TODOC: only 1 video
+  const video = dataObject.videoInfo[1].items[0]; // only 1 video
   const errors = dataObject.errors;
   const pulledVidioInfo = {
     id: video && video.id,
@@ -37,7 +36,6 @@ const processVideoData = dataObject => {
 
 const getVideoInfo = async (apiKey, videoId, options = {}, apiOptions = {}) => {
   const defaultOptions = {
-    //TODOC: module options
     rawApiData: false
   };
   const endOptions = Object.assign({}, defaultOptions, options);
