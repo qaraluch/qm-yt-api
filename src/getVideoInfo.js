@@ -57,7 +57,7 @@ const getVideoInfo = async (apiKey, videoId, options = {}, apiOptions = {}) => {
       });
     return endOptions.rawApiData ? allRawData : processVideoData(allRawData);
   } catch (error) {
-    mainErr(error);
+    mainErr(error, "getVideoInfo()");
   }
 };
 

@@ -118,7 +118,7 @@ const getVideosInfoFromPlaylist = async (
       });
     return endOptions.rawApiData ? allRawData : processVideosData(allRawData);
   } catch (error) {
-    mainErr(error);
+    mainErr(error, "getVideosInfoFromPlaylist()");
   }
 };
 
