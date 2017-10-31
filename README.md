@@ -1,6 +1,6 @@
 ![logo-qm](./pic/logo-qm.jpg)
 
-# qm-yt-api [![npm version](https://badge.fury.io/js/qm-yt-api.svg)](https://badge.fury.io/js/qm-yt-api) [![Build Status](https://travis-ci.org/qaraluch/qm-yt-api.svg?branch=master)](https://travis-ci.org/qaraluch/qm-yt-api) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+# qm-yt-api [![npm version](https://badge.fury.io/js/qm-yt-api.svg)](https://badge.fury.io/js/qm-yt-api) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 >  Simple wrapper of youtube api for getting info about videos also ones in playlist.   
 
