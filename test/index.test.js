@@ -63,7 +63,25 @@ test("getVideosInfoFromPlaylist() - get videos info from YT playlist", async t =
   const msg = "should get videos info from YT playlist";
   const actual = await ytAPI.getVideosInfoFromPlaylist(key, playlist);
   delete actual.askDate;
+  delete actual.errors;
   const expected = expectedInfoFromPlaylis;
+  t.deepEqual(actual, expected, msg);
+});
+
+test("getVideosInfoFromPlaylist() - bubble up API request errors", async t => {
+  const msg = "should get video info";
+  const data = await ytAPI.getVideosInfoFromPlaylist(key, playlist);
+  const actual = data.errors.length === 4;
+  const expected = true;
+  t.is(actual, expected, msg);
+});
+
+//TODOC: when id of video not found, not errors are thrown by YT API
+test.skip("getVideosInfoFromPlaylist() - wrong playlist Id", async t => {
+  const msg = "should return undefined";
+  const data = await ytAPI.getVideosInfoFromPlaylist(key, "12345555553");
+  const actual = data.errors;
+  const expected = {};
   t.deepEqual(actual, expected, msg);
 });
 

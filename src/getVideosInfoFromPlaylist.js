@@ -15,6 +15,7 @@ const processVideosData = dataObject => {
   const playListInfo = dataObject.playListInfo[1];
   const playlistId = dataObject.playlistId;
   const videosInfo = dataObject.viedosInfo;
+  const errors = dataObject.errors;
   const pullVidiosInfo = obj => ({
     position: obj.snippet.position,
     id: obj.contentDetails.videoId,
@@ -30,10 +31,25 @@ const processVideosData = dataObject => {
     playlisName: playListInfo && playListInfo.items[0].snippet.title,
     playlistId,
     itemsNumber: playListInfo && playListInfo.items[0].contentDetails.itemCount,
-    videos: [].concat(...processVideosInfo)
+    videos: [].concat(...processVideosInfo),
+    errors
   };
   return dataProcessed;
 };
+
+function bubbleUpApiErrors(res) {
+  const plReqErr = res.playListInfo[0];
+  const plResErr = res.playListInfo[2];
+  const viReqErr = res.viedosInfo.map(r => r[0]);
+  const viResErr = res.viedosInfo.map(r => r[2]);
+  //TODOC: error sequence
+  res.errors = [];
+  res.errors.push(plReqErr);
+  res.errors.push(plResErr);
+  res.errors.push(viReqErr);
+  res.errors.push(viResErr);
+  return res;
+}
 
 const getEndApiOptionsForPlayListInfo = (playlistId, apiOptions) =>
   margeOptions(getDefaultOptionsForPlayListInfo(playlistId), apiOptions);
@@ -95,7 +111,8 @@ const getVideosInfoFromPlaylist = async (
       getEndApiOptionsForVideosInfo
     })
       .then(addRawDataFromPlaylistInfo)
-      .then(getRawDataFromVideosInfo);
+      .then(getRawDataFromVideosInfo)
+      .then(bubbleUpApiErrors);
     return endOptions.rawApiData ? allRawData : processVideosData(allRawData);
   } catch (error) {
     mainErr(error);

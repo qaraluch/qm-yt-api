@@ -52,7 +52,7 @@ test.skip("Save raw YT Video API data for reference", async t => {
   t.deepEqual(1, 1);
 });
 
-test.skip("Save YT Video API data for reference", async t => {
+test.skip("Save processed YT Video API data for reference", async t => {
   const data = await ytAPI.getVideoInfo(key, video, {
     rawApiData: false
   });
