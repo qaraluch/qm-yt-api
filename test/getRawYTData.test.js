@@ -5,6 +5,7 @@ import touch from "qm-fs-touch";
 
 const key = credentials.key;
 const playlist = credentials.playlistLong;
+const video = credentials.video;
 
 test.skip("check credentials", t => {
   const msg1 = "should load api key";
@@ -36,6 +37,26 @@ test.skip("Save raw YT API data for reference", async t => {
     rawApiData: true
   });
   await touch("./test/dump-rawYTAPIdata.json", JSON.stringify(data, null, 2), {
+    overwrite: true
+  });
+  t.deepEqual(1, 1);
+});
+
+test.skip("Save raw YT Video API data for reference", async t => {
+  const data = await ytAPI.getVideoInfo(key, video, {
+    rawApiData: true
+  });
+  await touch("./test/dump-rawVideoData.json", JSON.stringify(data, null, 2), {
+    overwrite: true
+  });
+  t.deepEqual(1, 1);
+});
+
+test.skip("Save YT Video API data for reference", async t => {
+  const data = await ytAPI.getVideoInfo(key, video, {
+    rawApiData: false
+  });
+  await touch("./test/dump-videoData.json", JSON.stringify(data, null, 2), {
     overwrite: true
   });
   t.deepEqual(1, 1);
