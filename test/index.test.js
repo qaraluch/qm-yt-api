@@ -94,9 +94,35 @@ test("getVideoInfo() - get video info from YT", async t => {
   const msg = "should get video info";
   const data = await ytAPI.getVideoInfo(key, video);
   const actual = data;
+  delete data.errors;
   const expected = expectedVideoInfo;
   t.deepEqual(actual, expected, msg);
 });
+
+const expectedErrorObj = {
+  id: undefined,
+  title: undefined
+};
+
+//TODOC: when id of video not found, not errors are thrown by YT API
+test("getVideoInfo() - wrong video Id", async t => {
+  const msg = "should return undefined";
+  const data = await ytAPI.getVideoInfo(key, "12345555553");
+  const actual = data;
+  delete data.errors;
+  const expected = expectedErrorObj;
+  t.deepEqual(actual, expected, msg);
+});
+
+test("getVideoInfo() - bubble up API request errors", async t => {
+  const msg = "should get video info";
+  const data = await ytAPI.getVideoInfo(key, "12345555553");
+  const actual = data.errors.length === 2;
+  const expected = true;
+  t.is(actual, expected, msg);
+});
+
+// For DEV only:
 
 // test.only("only - skip all test in this file", t => {
 //   t.pass();
