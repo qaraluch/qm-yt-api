@@ -103,6 +103,16 @@ test("get videos info from **flong** YT playlist", async t => {
   t.is(actual, expected, msg);
 });
 
+test("throw error when no api key passed as argument", async t => {
+  const msg = "should throw an error";
+  const error = await t.throws(ytAPI.getVideosInfoFromPlaylist());
+  t.is(
+    error.message,
+    "qm-yt-api - getVideosInfoFromPlaylist(): No passed YT api key to the method!",
+    msg
+  );
+});
+
 // import touch from "qm-fs-touch";
 // test.only("--------------> dev", async t => {
 //   const returnData = await ytAPI.getVideosInfoFromPlaylist(key, "adasdda");

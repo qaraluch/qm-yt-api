@@ -1,4 +1,4 @@
-import { margeOptions, mainErr } from "../dist/utils.js";
+import { margeOptions, mainErr, noApiKeyErr } from "../dist/utils.js";
 import {
   callPlaylistInfo,
   callVideosInfo,
@@ -101,6 +101,8 @@ const getVideosInfoFromPlaylist = async (
     rawApiData: false
   };
   const endOptions = Object.assign({}, defaultOptions, options);
+
+  apiKey || noApiKeyErr("getVideosInfoFromPlaylist()");
 
   try {
     // get info from yt api

@@ -72,6 +72,16 @@ test("bubble up API request errors", async t => {
   t.is(actual, expected, msg);
 });
 
+test("throw error when no api key passed as argument", async t => {
+  const msg = "should throw an error";
+  const error = await t.throws(ytAPI.getVideoInfo());
+  t.is(
+    error.message,
+    "qm-yt-api - getVideoInfo(): No passed YT api key to the method!",
+    msg
+  );
+});
+
 // test.only("--------------> dev", async t => {
 //   const returnData = await ytAPI.getVideoInfo(key, video);
 //   await touch("./test/dev.json", JSON.stringify(returnData, null, 2), {

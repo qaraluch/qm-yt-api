@@ -1,4 +1,4 @@
-import { margeOptions, mainErr } from "../dist/utils.js";
+import { margeOptions, mainErr, noApiKeyErr } from "../dist/utils.js";
 import { callVideoInfo, getDefaultOptionsForVideoInfo } from "../dist/api.js";
 
 const getEndApiOptionsVideoInfo = (videoId, apiOptions) =>
@@ -41,6 +41,8 @@ const getVideoInfo = async (apiKey, videoId, options = {}, apiOptions = {}) => {
     rawApiData: false
   };
   const endOptions = Object.assign({}, defaultOptions, options);
+
+  apiKey || noApiKeyErr("getVideoInfo()");
 
   try {
     // get info from yt api

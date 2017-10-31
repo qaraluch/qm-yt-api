@@ -5,4 +5,8 @@ const mainErr = (err, method) => {
   throw new Error(`qm-yt-api - ${method}: ${err.message} \n ${err.stack}`);
 };
 
-export { margeOptions, mainErr };
+const noApiKeyErr = method => {
+  throw new Error(`qm-yt-api - ${method}: No passed YT api key to the method!`);
+};
+
+export { margeOptions, mainErr, noApiKeyErr };
