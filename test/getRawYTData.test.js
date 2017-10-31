@@ -61,3 +61,13 @@ test.skip("Save processed YT Video API data for reference", async t => {
   });
   t.deepEqual(1, 1);
 });
+
+// test.only("Save porcessed YT API data when error", async t => {
+//   const data = await ytAPI.getVideosInfoFromPlaylist(key, "342423424342", {
+//     rawApiData: false
+//   });
+//   await touch("./test/dump-test.json", JSON.stringify(data, null, 2), {
+//     overwrite: true
+//   });
+//   t.deepEqual(1, 1);
+// });

@@ -1,7 +1,6 @@
 import test from "ava";
 import ytAPI from "../dist/index.js";
 import credentials from "../test/.key.json";
-import touch from "qm-fs-touch";
 
 // Tests are made against real YT data!
 const key = credentials.key;
@@ -78,7 +77,7 @@ test("getVideosInfoFromPlaylist() - bubble up API request errors", async t => {
 
 //TODOC: when id of video not found, not errors are thrown by YT API
 test.skip("getVideosInfoFromPlaylist() - wrong playlist Id", async t => {
-  const msg = "should return undefined";
+  const msg = "should return undefined id and title";
   const data = await ytAPI.getVideosInfoFromPlaylist(key, "12345555553");
   const actual = data.errors;
   const expected = {};
