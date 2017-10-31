@@ -31,7 +31,7 @@ test("constructor function check", t => {
 
 test("return promise istance", t => {
   const msg = "should return promise istance";
-  const actual = ytAPI.getVideosInfoFromPlaylist() instanceof Promise;
+  const actual = ytAPI.getVideosInfoFromPlaylist(key) instanceof Promise;
   const expected = true;
   t.is(actual, expected, msg);
 });
@@ -76,7 +76,7 @@ test("bubble up API request errors", async t => {
 
 //TODOC: when id of video not found, error are thrown by YT API for
 //       youtube.playlistItem request
-test.only("wrong playlist Id", async t => {
+test("wrong playlist Id", async t => {
   const msg =
     "should return array with null for videos property of returned object";
   const data = await ytAPI.getVideosInfoFromPlaylist(key, "12345555553");
@@ -102,3 +102,13 @@ test("get videos info from **flong** YT playlist", async t => {
   const expected = 60;
   t.is(actual, expected, msg);
 });
+
+// import touch from "qm-fs-touch";
+// test.only("--------------> dev", async t => {
+//   const returnData = await ytAPI.getVideosInfoFromPlaylist(key, "adasdda");
+//   await touch("./test/dev.json", JSON.stringify(returnData, null, 2), {
+//     overwrite: true
+//   });
+//   console.log("written data to ./test/dev.json");
+//   t.deepEqual(1, 1);
+// });

@@ -30,7 +30,7 @@ test("constructor function check", t => {
 
 test("return promise istance", t => {
   const msg = "should return promise istance";
-  const actual = ytAPI.getVideoInfo() instanceof Promise;
+  const actual = ytAPI.getVideoInfo(key) instanceof Promise;
   const expected = true;
   t.is(actual, expected, msg);
 });

@@ -28,9 +28,10 @@ const processVideosData = dataObject => {
   const now = new Date();
   const dataProcessed = {
     askDate: now.toString(),
-    playlisName: playListInfo && playListInfo.items[0].snippet.title,
+    playlisName: playListInfo.items[0] && playListInfo.items[0].snippet.title,
     playlistId,
-    itemsNumber: playListInfo && playListInfo.items[0].contentDetails.itemCount,
+    itemsNumber:
+      playListInfo.items[0] && playListInfo.items[0].contentDetails.itemCount,
     videos: [].concat(...processVideosInfo),
     errors
   };
