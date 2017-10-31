@@ -18,9 +18,9 @@
   "module": "./src/index.js",
   "scripts": {
     "build": "babel src --out-dir=dist",
-    "test": "ava --verbose \"test/*.test.js\"",
+    "test": "ava --verbose",
     "start": "npm run build && node dist/index.js",
-    "start:test": "npm run build -s && npm run test -s",
+    "start:test": "npm run build -s && npm run test -s $1",
     "prepublishOnly": "npm run build",
     "watch": "nodemon --watch src --watch test -x \"npm run start:test -s\"",
     "clear": "rimraf dist/*",

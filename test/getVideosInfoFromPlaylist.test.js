@@ -6,7 +6,6 @@ import credentials from "../test/.key.json";
 const key = credentials.key;
 const playlist = credentials.playlist;
 const playlistLong = credentials.playlistLong;
-const video = credentials.video;
 
 test("check credentials", t => {
   const msg1 = "should load api key";
@@ -23,14 +22,14 @@ test("check credentials", t => {
   t.is(actual3, expected3, msg3);
 });
 
-test("getVideosInfoFromPlaylist() - constructor function check", t => {
+test("constructor function check", t => {
   const msg = "should be a function i.e. construction fn.";
   const actual = typeof ytAPI.getVideosInfoFromPlaylist === "function";
   const expected = true;
   t.is(actual, expected, msg);
 });
 
-test("getVideosInfoFromPlaylist() - return promise istance", t => {
+test("return promise istance", t => {
   const msg = "should return promise istance";
   const actual = ytAPI.getVideosInfoFromPlaylist() instanceof Promise;
   const expected = true;
@@ -58,7 +57,7 @@ const expectedInfoFromPlaylis = {
   ]
 };
 
-test("getVideosInfoFromPlaylist() - get videos info from YT playlist", async t => {
+test("get videos info from YT playlist", async t => {
   const msg = "should get videos info from YT playlist";
   const actual = await ytAPI.getVideosInfoFromPlaylist(key, playlist);
   delete actual.askDate;
@@ -67,7 +66,7 @@ test("getVideosInfoFromPlaylist() - get videos info from YT playlist", async t =
   t.deepEqual(actual, expected, msg);
 });
 
-test("getVideosInfoFromPlaylist() - bubble up API request errors", async t => {
+test("bubble up API request errors", async t => {
   const msg = "should get video info";
   const data = await ytAPI.getVideosInfoFromPlaylist(key, playlist);
   const actual = data.errors.length === 4;
@@ -75,16 +74,18 @@ test("getVideosInfoFromPlaylist() - bubble up API request errors", async t => {
   t.is(actual, expected, msg);
 });
 
-//TODOC: when id of video not found, not errors are thrown by YT API
-test.skip("getVideosInfoFromPlaylist() - wrong playlist Id", async t => {
-  const msg = "should return undefined id and title";
+//TODOC: when id of video not found, error are thrown by YT API for
+//       youtube.playlistItem request
+test.only("wrong playlist Id", async t => {
+  const msg =
+    "should return array with null for videos property of returned object";
   const data = await ytAPI.getVideosInfoFromPlaylist(key, "12345555553");
-  const actual = data.errors;
-  const expected = {};
+  const actual = data.videos;
+  const expected = [undefined];
   t.deepEqual(actual, expected, msg);
 });
 
-test("getVideosInfoFromPlaylist() - get raw YT Api data", async t => {
+test("get raw YT Api data", async t => {
   const msg = "should get raw YT Api data";
   const actual = await ytAPI.getVideosInfoFromPlaylist(key, playlist, {
     rawApiData: true
@@ -93,7 +94,7 @@ test("getVideosInfoFromPlaylist() - get raw YT Api data", async t => {
   t.is(actual.playListInfo[1].kind, expected, msg);
 });
 
-test("getVideosInfoFromPlaylist() - get videos info from **flong** YT playlist", async t => {
+test("get videos info from **flong** YT playlist", async t => {
   const msg = "should get videos count from long YT playlist (60)";
   // check if correct -> https://www.youtube.com/playlist?list=PLwJS-G75vM7kFO-yUkyNphxSIdbi_1NKX
   const data = await ytAPI.getVideosInfoFromPlaylist(key, playlistLong);
@@ -101,55 +102,3 @@ test("getVideosInfoFromPlaylist() - get videos info from **flong** YT playlist",
   const expected = 60;
   t.is(actual, expected, msg);
 });
-
-const expectedVideoInfo = {
-  id: "8CrOL-ydFMI",
-  title: "This Is Water - Full version-David Foster Wallace Commencement Speech"
-};
-
-test("getVideoInfo() - get video info from YT", async t => {
-  const msg = "should get video info";
-  const data = await ytAPI.getVideoInfo(key, video);
-  const actual = data;
-  delete data.errors;
-  const expected = expectedVideoInfo;
-  t.deepEqual(actual, expected, msg);
-});
-
-const expectedErrorObj = {
-  id: undefined,
-  title: undefined
-};
-
-//TODOC: when id of video not found, not errors are thrown by YT API
-test("getVideoInfo() - wrong video Id", async t => {
-  const msg = "should return undefined";
-  const data = await ytAPI.getVideoInfo(key, "12345555553");
-  const actual = data;
-  delete data.errors;
-  const expected = expectedErrorObj;
-  t.deepEqual(actual, expected, msg);
-});
-
-test("getVideoInfo() - bubble up API request errors", async t => {
-  const msg = "should get video info";
-  const data = await ytAPI.getVideoInfo(key, "12345555553");
-  const actual = data.errors.length === 2;
-  const expected = true;
-  t.is(actual, expected, msg);
-});
-
-// For DEV only:
-
-// test.only("only - skip all test in this file", t => {
-//   t.pass();
-// });
-
-// test.only("--------------> dev", async t => {
-//   const returnData = await ytAPI.getVideoInfo(key, video);
-//   await touch("./test/dev.json", JSON.stringify(returnData, null, 2), {
-//     overwrite: true
-//   });
-//   console.log("written data to ./test/dev.json");
-//   t.deepEqual(1, 1);
-// });
