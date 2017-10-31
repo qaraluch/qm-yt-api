@@ -112,7 +112,10 @@ const getVideosInfoFromPlaylist = async (
     })
       .then(addRawDataFromPlaylistInfo)
       .then(getRawDataFromVideosInfo)
-      .then(bubbleUpApiErrors);
+      .then(bubbleUpApiErrors)
+      .catch(err => {
+        throw new Error(err);
+      });
     return endOptions.rawApiData ? allRawData : processVideosData(allRawData);
   } catch (error) {
     mainErr(error);

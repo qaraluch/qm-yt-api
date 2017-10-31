@@ -51,7 +51,10 @@ const getVideoInfo = async (apiKey, videoId, options = {}, apiOptions = {}) => {
       getEndApiOptionsVideoInfo
     })
       .then(addRawDataFromPlaylistInfo)
-      .then(bubbleUpApiErrors);
+      .then(bubbleUpApiErrors)
+      .catch(err => {
+        throw new Error(err);
+      });
     return endOptions.rawApiData ? allRawData : processVideoData(allRawData);
   } catch (error) {
     mainErr(error);
