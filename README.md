@@ -54,9 +54,9 @@ const videos = await ytAPI.getVideosInfoFromPlaylist(key, playlistId);
 ```
 
 ## Options
-There's possibility to get raw youtube api response. All you need is set additional options:
+There's possibility to get raw youtube api response. All you need is set additional option:
 ```js
-const = options = { rawApiData: true }; //default: false
+const options = { rawApiData: true }; //default: false
 const videoInfo = await ytAPI.getVideoInfo(apiKey, videoId, options, apiOptions)
 ```
 
