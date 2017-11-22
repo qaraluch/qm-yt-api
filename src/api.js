@@ -8,17 +8,20 @@ const returnYTapi = apiKey =>
 
 const returnApiCB = (reject, resolve) => {
   return (err, data, response) => {
-    var errData;
     var reqData;
-    var resData;
     if (err) {
-      errData = err;
+      console.log("err ", err.message);
+      throw new Error(err);
     } else if (data) {
+      console.log("data ", data);
       reqData = data;
     } else if (response) {
-      resData = "Status code: " + response.statusCode;
+      throw new Error(
+        `YT API rejected request! Status code: ${response.statusCode}. 
+        Check out an url: developers.google.com/youtube/v3/docs/errors`
+      );
     }
-    resolve([errData, reqData, resData]);
+    resolve(reqData);
   };
 };
 

@@ -12,24 +12,12 @@ const addRawDataFromPlaylistInfo = async res => {
   return res;
 };
 
-function bubbleUpApiErrors(res) {
-  const reqErr = res.videoInfo[0];
-  const resErr = res.videoInfo[2];
-  res.errors = [];
-  res.errors.push(reqErr);
-  res.errors.push(resErr);
-  return res;
-}
-
 // Data structure of dataObject:
-// - property videoInfo: [errData, reqData, resData]
 const processVideoData = dataObject => {
-  const video = dataObject.videoInfo[1].items[0]; // only 1 video
-  const errors = dataObject.errors;
+  const video = dataObject.videoInfo.items[0]; // only 1 video
   const pulledVidioInfo = {
     id: video && video.id,
-    title: video && video.snippet.title,
-    errors
+    title: video && video.snippet.title
   };
   return pulledVidioInfo;
 };
@@ -51,7 +39,6 @@ const getVideoInfo = async (apiKey, videoId, options = {}, apiOptions = {}) => {
       getEndApiOptionsVideoInfo
     })
       .then(addRawDataFromPlaylistInfo)
-      .then(bubbleUpApiErrors)
       .catch(err => {
         throw new Error(err);
       });
