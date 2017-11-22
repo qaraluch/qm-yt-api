@@ -30,7 +30,7 @@ const videoInfo = await ytAPI.getVideoInfo(key, videoId);
 const videos = await ytAPI.getVideosInfoFromPlaylist(key, playlistId);
 // =>
 // {
-//   playlisName: "...",
+//   playlistName: "...",
 //   playlistId: "PL14-...",
 //   itemsNumber: 2,
 //   askDate": "Tue Oct 31 2017 09:19:50 GMT+0100 (STD)",

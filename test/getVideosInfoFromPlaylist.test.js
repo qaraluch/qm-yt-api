@@ -37,7 +37,7 @@ test("return promise istance", t => {
 });
 
 const expectedInfoFromPlaylis = {
-  playlisName: "xxx-api-test",
+  playlistName: "xxx-api-test",
   playlistId: "PL14-o1976FEZbkTr9dDiDcDDUbMftdMjz",
   itemsNumber: 2,
   videos: [
