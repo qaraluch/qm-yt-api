@@ -10,11 +10,11 @@ const returnApiCB = (reject, resolve) => {
   return (err, data, response) => {
     var reqData;
     if (err) {
-      throw new Error(err);
+      reject(err);
     } else if (data) {
       reqData = data;
     } else if (response) {
-      throw new Error(
+      reject(
         `YT API rejected request! Status code: ${response.statusCode}. 
         Check out an url: developers.google.com/youtube/v3/docs/errors`
       );
