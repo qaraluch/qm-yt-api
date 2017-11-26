@@ -72,9 +72,7 @@ const getDefaultOptionsForVideoInfo = videoId => ({
 });
 
 const getNextPageToken = apiResponse =>
-  apiResponse[1] &&
-  apiResponse[1].nextPageToken &&
-  apiResponse[1].nextPageToken;
+  apiResponse.nextPageToken && apiResponse.nextPageToken;
 
 export {
   callPlaylistInfo,

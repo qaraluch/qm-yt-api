@@ -57,21 +57,12 @@ const expectedInfoFromPlaylis = {
   ]
 };
 
-test("get videos info from YT playlist", async t => {
+test.only.serial("get videos info from YT playlist", async t => {
   const msg = "should get videos info from YT playlist";
   const actual = await ytAPI.getVideosInfoFromPlaylist(key, playlist);
   delete actual.askDate;
-  delete actual.errors;
   const expected = expectedInfoFromPlaylis;
   t.deepEqual(actual, expected, msg);
-});
-
-test("bubble up API request errors", async t => {
-  const msg = "should get video info";
-  const data = await ytAPI.getVideosInfoFromPlaylist(key, playlist);
-  const actual = data.errors.length === 4;
-  const expected = true;
-  t.is(actual, expected, msg);
 });
 
 //TODOC: when id of video not found, error are thrown by YT API for
@@ -94,7 +85,7 @@ test("get raw YT Api data", async t => {
   t.is(actual.playListInfo[1].kind, expected, msg);
 });
 
-test("get videos info from **flong** YT playlist", async t => {
+test("get videos info from **long** YT playlist", async t => {
   const msg = "should get videos count from long YT playlist (60)";
   // check if correct -> https://www.youtube.com/playlist?list=PLwJS-G75vM7kFO-yUkyNphxSIdbi_1NKX
   const data = await ytAPI.getVideosInfoFromPlaylist(key, playlistLong);
