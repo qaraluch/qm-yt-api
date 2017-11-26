@@ -72,8 +72,8 @@ test.serial("wrong playlist Id", async t => {
   );
   // error are thrown by YT API for youtube.playlistItem request
   t.is(
-    error.message.slice(0, 82),
-    "qm-yt-api - getVideosInfoFromPlaylist(): The playlist identified with the requests",
+    error.message,
+    "qm-yt-api - getVideosInfoFromPlaylist(): The playlist identified with the requests <code>playlistId</code> parameter cannot be found.",
     msg
   );
 });
@@ -100,7 +100,7 @@ test.serial("throw error when no api key passed as argument", async t => {
   const msg = "should throw an error";
   const error = await t.throws(ytAPI.getVideosInfoFromPlaylist());
   t.is(
-    error.message.slice(0, 76),
+    error.message,
     "qm-yt-api - getVideosInfoFromPlaylist(): No passed YT api key to the method!",
     msg
   );
