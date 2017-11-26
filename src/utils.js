@@ -5,8 +5,12 @@ const mainErr = (err, method) => {
   throw new Error(`qm-yt-api - ${method}: ${err.message} \n ${err.stack}`);
 };
 
-const noApiKeyErr = method => {
-  throw new Error(`qm-yt-api - ${method}: No passed YT api key to the method!`);
+const noApiKeyErr = () => {
+  throw new Error("No passed YT api key to the method!");
 };
 
-export { margeOptions, mainErr, noApiKeyErr };
+const emptyResponseErr = () => {
+  throw new Error("Returned empty response! Probably passed wrong video Id!");
+};
+
+export { margeOptions, mainErr, noApiKeyErr, emptyResponseErr };

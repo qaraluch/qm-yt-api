@@ -23,7 +23,6 @@ const videoInfo = await ytAPI.getVideoInfo(key, videoId);
 // {
 //   id: "8CrOL-ydFMI",
 //   title: "This Is Water ... "
-//   errors: [...]
 // }
 
 // or 
@@ -49,7 +48,6 @@ const videos = await ytAPI.getVideosInfoFromPlaylist(key, playlistId);
 //       title: "Everyday Virtue..."
 //     }
 //   ],
-//  errors: []
 // };
 ```
 
@@ -70,6 +68,9 @@ const apiOptions = {
 
 See additional options in
  Google [documentation](https://developers.google.com/youtube/v3/docs/videos/list).
+
+## YT API Errors:
+For all encounter [API error messages](https://developers.google.com/youtube/v3/docs/errors) the module throws an error.  
 
 ## Tests
 Tests are made against real YT data, so for performing testing you need working google apikey and put it to `./test/key.json` file.

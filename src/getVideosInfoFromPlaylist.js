@@ -6,15 +6,15 @@ import {
   getDefaultOptionsForVideosInfo,
   getNextPageToken
 } from "../dist/api.js";
+import { throws } from "assert";
 
 // Data structure of dataObject:
-// - property playListInfo: [errData, reqData, resData]
-// - property videosInfo: [ [errData, reqData, resData], ...[]]
+// - property playListInfo: reqData
+// - property videosInfo: [ reqData, ...[]] for every 50 items in PL
 const processVideosData = dataObject => {
-  const playListInfo = dataObject.playListInfo[1];
+  const playListInfo = dataObject.playListInfo;
   const playlistId = dataObject.playlistId;
   const videosInfo = dataObject.viedosInfo;
-  const errors = dataObject.errors;
   const pullVidiosInfo = obj => ({
     position: obj.snippet.position,
     id: obj.contentDetails.videoId,
@@ -22,7 +22,7 @@ const processVideosData = dataObject => {
     publishedAt: obj.snippet.publishedAt
   });
   const processVideosInfo = videosInfo.map(
-    arr => arr[1] && arr[1].items.map(pullVidiosInfo)
+    arr => arr && arr.items.map(pullVidiosInfo)
   );
   const now = new Date();
   const dataProcessed = {
@@ -31,35 +31,24 @@ const processVideosData = dataObject => {
     playlistId,
     itemsNumber:
       playListInfo.items[0] && playListInfo.items[0].contentDetails.itemCount,
-    videos: [].concat(...processVideosInfo),
-    errors
+    videos: [].concat(...processVideosInfo)
   };
   return dataProcessed;
 };
-
-function bubbleUpApiErrors(res) {
-  const plReqErr = res.playListInfo[0];
-  const plResErr = res.playListInfo[2];
-  const viReqErr = res.viedosInfo.map(r => r[0]);
-  const viResErr = res.viedosInfo.map(r => r[2]);
-  //TODOC: error sequence
-  res.errors = [];
-  res.errors.push(plReqErr);
-  res.errors.push(plResErr);
-  res.errors.push(viReqErr);
-  res.errors.push(viResErr);
-  return res;
-}
 
 const getEndApiOptionsForPlayListInfo = (playlistId, apiOptions) =>
   margeOptions(getDefaultOptionsForPlayListInfo(playlistId), apiOptions);
 
 const addRawDataFromPlaylistInfo = async res => {
-  res.playListInfo = await callPlaylistInfo(
-    res.apiKey,
-    res.getEndApiOptionsForPlayListInfo(res.playlistId, res.apiOptions)
-  );
-  return res;
+  try {
+    res.playListInfo = await callPlaylistInfo(
+      res.apiKey,
+      res.getEndApiOptionsForPlayListInfo(res.playlistId, res.apiOptions)
+    );
+    return res;
+  } catch (err) {
+    throw err;
+  }
 };
 
 const getEndApiOptionsForVideosInfo = (playlistId, apiOptions, nextPageToken) =>
@@ -79,10 +68,15 @@ const getRawDataFromVideosInfo = async res => {
     );
   // next call depends on page token of beforehand call!
   async function recursionAPICall(endApiOptions) {
-    const callAPI = await callVideosInfo(res.apiKey, endApiOptions);
-    apiInfo.push(callAPI);
-    const nextPageToken = getNextPageToken(callAPI);
-    nextPageToken && (await recursionAPICall(nextEndApiOptions(nextPageToken)));
+    try {
+      const callAPI = await callVideosInfo(res.apiKey, endApiOptions);
+      apiInfo.push(callAPI);
+      const nextPageToken = getNextPageToken(callAPI);
+      nextPageToken &&
+        (await recursionAPICall(nextEndApiOptions(nextPageToken)));
+    } catch (err) {
+      throw err;
+    }
   }
   await recursionAPICall(endApiOptions);
   res.viedosInfo = apiInfo;
@@ -96,14 +90,12 @@ const getVideosInfoFromPlaylist = async (
   apiOptions = {}
 ) => {
   const defaultOptions = {
-    //TODOC: module options
     rawApiData: false
   };
   const endOptions = Object.assign({}, defaultOptions, options);
 
-  apiKey || noApiKeyErr("getVideosInfoFromPlaylist()");
-
   try {
+    apiKey || noApiKeyErr("getVideosInfoFromPlaylist()");
     // get info from yt api
     let allRawData = await Promise.resolve({
       apiOptions,
@@ -114,10 +106,12 @@ const getVideosInfoFromPlaylist = async (
     })
       .then(addRawDataFromPlaylistInfo)
       .then(getRawDataFromVideosInfo)
-      .then(bubbleUpApiErrors)
       .catch(err => {
-        throw new Error(err);
+        throw err;
       });
+
+    // console.log("allRawData ", allRawData);
+
     return endOptions.rawApiData ? allRawData : processVideosData(allRawData);
   } catch (error) {
     mainErr(error, "getVideosInfoFromPlaylist()");

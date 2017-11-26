@@ -57,44 +57,37 @@ const expectedInfoFromPlaylis = {
   ]
 };
 
-test("get videos info from YT playlist", async t => {
+test.serial("get videos info from YT playlist", async t => {
   const msg = "should get videos info from YT playlist";
   const actual = await ytAPI.getVideosInfoFromPlaylist(key, playlist);
   delete actual.askDate;
-  delete actual.errors;
   const expected = expectedInfoFromPlaylis;
   t.deepEqual(actual, expected, msg);
 });
 
-test("bubble up API request errors", async t => {
-  const msg = "should get video info";
-  const data = await ytAPI.getVideosInfoFromPlaylist(key, playlist);
-  const actual = data.errors.length === 4;
-  const expected = true;
-  t.is(actual, expected, msg);
+test.serial("wrong playlist Id", async t => {
+  const msg = "should throw an error";
+  const error = await t.throws(
+    ytAPI.getVideosInfoFromPlaylist(key, "12345555553")
+  );
+  // error are thrown by YT API for youtube.playlistItem request
+  t.is(
+    error.message.slice(0, 82),
+    "qm-yt-api - getVideosInfoFromPlaylist(): The playlist identified with the requests",
+    msg
+  );
 });
 
-//TODOC: when id of video not found, error are thrown by YT API for
-//       youtube.playlistItem request
-test("wrong playlist Id", async t => {
-  const msg =
-    "should return array with null for videos property of returned object";
-  const data = await ytAPI.getVideosInfoFromPlaylist(key, "12345555553");
-  const actual = data.videos;
-  const expected = [undefined];
-  t.deepEqual(actual, expected, msg);
-});
-
-test("get raw YT Api data", async t => {
+test.serial("get raw YT Api data", async t => {
   const msg = "should get raw YT Api data";
   const actual = await ytAPI.getVideosInfoFromPlaylist(key, playlist, {
     rawApiData: true
   });
   const expected = "youtube#playlistListResponse";
-  t.is(actual.playListInfo[1].kind, expected, msg);
+  t.is(actual.playListInfo.kind, expected, msg);
 });
 
-test("get videos info from **flong** YT playlist", async t => {
+test.serial("get videos info from **long** YT playlist", async t => {
   const msg = "should get videos count from long YT playlist (60)";
   // check if correct -> https://www.youtube.com/playlist?list=PLwJS-G75vM7kFO-yUkyNphxSIdbi_1NKX
   const data = await ytAPI.getVideosInfoFromPlaylist(key, playlistLong);
@@ -103,11 +96,11 @@ test("get videos info from **flong** YT playlist", async t => {
   t.is(actual, expected, msg);
 });
 
-test("throw error when no api key passed as argument", async t => {
+test.serial("throw error when no api key passed as argument", async t => {
   const msg = "should throw an error";
   const error = await t.throws(ytAPI.getVideosInfoFromPlaylist());
   t.is(
-    error.message,
+    error.message.slice(0, 76),
     "qm-yt-api - getVideosInfoFromPlaylist(): No passed YT api key to the method!",
     msg
   );

@@ -1,7 +1,7 @@
 {
   "name": "qm-yt-api",
   "homepage": "https://github.com/qaraluch/qm-yt-api",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "My youtube api wrapper",
   "license": "MIT",
   "author": {
