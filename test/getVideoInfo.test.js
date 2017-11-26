@@ -40,7 +40,7 @@ const expectedVideoInfo = {
   title: "This Is Water - Full version-David Foster Wallace Commencement Speech"
 };
 
-test("get video info from YT", async t => {
+test.serial("get video info from YT", async t => {
   const msg = "should get video info";
   const data = await ytAPI.getVideoInfo(key, video);
   const actual = data;
@@ -48,17 +48,21 @@ test("get video info from YT", async t => {
   t.deepEqual(actual, expected, msg);
 });
 
-test.only("wrong video Id", async t => {
+test.serial("wrong video Id", async t => {
   const msg = "should throw an error";
   const error = await t.throws(ytAPI.getVideoInfo(key, "12345555553"));
-  t.is(error.message, error, msg);
+  t.is(
+    error.message.slice(0, 52),
+    "qm-yt-api - getVideoInfo(): Returned empty response!",
+    msg
+  );
 });
 
-test("throw error when no api key passed as argument", async t => {
+test.serial("throw error when no api key passed as argument", async t => {
   const msg = "should throw an error";
   const error = await t.throws(ytAPI.getVideoInfo());
   t.is(
-    error.message,
+    error.message.slice(0, 63),
     "qm-yt-api - getVideoInfo(): No passed YT api key to the method!",
     msg
   );

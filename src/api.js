@@ -10,10 +10,8 @@ const returnApiCB = (reject, resolve) => {
   return (err, data, response) => {
     var reqData;
     if (err) {
-      console.log("err ", err.message);
       throw new Error(err);
     } else if (data) {
-      console.log("data ", data);
       reqData = data;
     } else if (response) {
       throw new Error(

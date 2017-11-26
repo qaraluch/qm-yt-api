@@ -1,4 +1,9 @@
-import { margeOptions, mainErr, noApiKeyErr } from "../dist/utils.js";
+import {
+  margeOptions,
+  mainErr,
+  noApiKeyErr,
+  emptyResponseErr
+} from "../dist/utils.js";
 import { callVideoInfo, getDefaultOptionsForVideoInfo } from "../dist/api.js";
 
 const getEndApiOptionsVideoInfo = (videoId, apiOptions) =>
@@ -22,15 +27,20 @@ const processVideoData = dataObject => {
   return pulledVidioInfo;
 };
 
+const throwErrWhenNoResults = res => {
+  const video = res.videoInfo.items[0]; // only 1 video
+  video === undefined && emptyResponseErr("getVideoInfo()");
+  return res;
+};
+
 const getVideoInfo = async (apiKey, videoId, options = {}, apiOptions = {}) => {
   const defaultOptions = {
     rawApiData: false
   };
   const endOptions = Object.assign({}, defaultOptions, options);
 
-  apiKey || noApiKeyErr("getVideoInfo()");
-
   try {
+    apiKey || noApiKeyErr("getVideoInfo()");
     // get info from yt api
     let allRawData = await Promise.resolve({
       apiOptions,
@@ -39,8 +49,9 @@ const getVideoInfo = async (apiKey, videoId, options = {}, apiOptions = {}) => {
       getEndApiOptionsVideoInfo
     })
       .then(addRawDataFromPlaylistInfo)
+      .then(throwErrWhenNoResults) // in videoInfo.items
       .catch(err => {
-        throw new Error(err);
+        throw err;
       });
     return endOptions.rawApiData ? allRawData : processVideoData(allRawData);
   } catch (error) {
