@@ -6,6 +6,7 @@ import {
   getDefaultOptionsForVideosInfo,
   getNextPageToken
 } from "../dist/api.js";
+import { throws } from "assert";
 
 // Data structure of dataObject:
 // - property playListInfo: reqData
@@ -39,11 +40,15 @@ const getEndApiOptionsForPlayListInfo = (playlistId, apiOptions) =>
   margeOptions(getDefaultOptionsForPlayListInfo(playlistId), apiOptions);
 
 const addRawDataFromPlaylistInfo = async res => {
-  res.playListInfo = await callPlaylistInfo(
-    res.apiKey,
-    res.getEndApiOptionsForPlayListInfo(res.playlistId, res.apiOptions)
-  );
-  return res;
+  try {
+    res.playListInfo = await callPlaylistInfo(
+      res.apiKey,
+      res.getEndApiOptionsForPlayListInfo(res.playlistId, res.apiOptions)
+    );
+    return res;
+  } catch (err) {
+    throw err;
+  }
 };
 
 const getEndApiOptionsForVideosInfo = (playlistId, apiOptions, nextPageToken) =>
@@ -63,10 +68,15 @@ const getRawDataFromVideosInfo = async res => {
     );
   // next call depends on page token of beforehand call!
   async function recursionAPICall(endApiOptions) {
-    const callAPI = await callVideosInfo(res.apiKey, endApiOptions);
-    apiInfo.push(callAPI);
-    const nextPageToken = getNextPageToken(callAPI);
-    nextPageToken && (await recursionAPICall(nextEndApiOptions(nextPageToken)));
+    try {
+      const callAPI = await callVideosInfo(res.apiKey, endApiOptions);
+      apiInfo.push(callAPI);
+      const nextPageToken = getNextPageToken(callAPI);
+      nextPageToken &&
+        (await recursionAPICall(nextEndApiOptions(nextPageToken)));
+    } catch (err) {
+      throw err;
+    }
   }
   await recursionAPICall(endApiOptions);
   res.viedosInfo = apiInfo;
@@ -97,7 +107,7 @@ const getVideosInfoFromPlaylist = async (
       .then(addRawDataFromPlaylistInfo)
       .then(getRawDataFromVideosInfo)
       .catch(err => {
-        throw new Error(err);
+        throw err;
       });
 
     // console.log("allRawData ", allRawData);
