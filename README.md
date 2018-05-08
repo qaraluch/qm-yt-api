@@ -1,31 +1,32 @@
 ![logo-qm](./pic/logo-qm.jpg)
 
-# qm-yt-api [![npm version](https://badge.fury.io/js/qm-yt-api.svg)](https://badge.fury.io/js/qm-yt-api) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+# qm-yt-api (DEPRECATED) [![npm version](https://badge.fury.io/js/qm-yt-api.svg)](https://badge.fury.io/js/qm-yt-api) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
->  Simple wrapper of youtube api for getting info about videos also ones in playlist.   
-
+> Simple wrapper of youtube api for getting info about videos also ones in playlist.
 
 ## Installation
+
 ```sh
 $ npm i -S qm-yt-api
 ```
 
-
 ## Usage
+
 All module's functions returns promise object.
+
 ```js
 import ytAPI from "qm-yt-api";
 
 // ...
 
 const videoInfo = await ytAPI.getVideoInfo(key, videoId);
-// => 
+// =>
 // {
 //   id: "8CrOL-ydFMI",
 //   title: "This Is Water ... "
 // }
 
-// or 
+// or
 const videos = await ytAPI.getVideosInfoFromPlaylist(key, playlistId);
 // =>
 // {
@@ -52,7 +53,9 @@ const videos = await ytAPI.getVideosInfoFromPlaylist(key, playlistId);
 ```
 
 ## Options
+
 There's possibility to get raw youtube api response. All you need is set additional option:
+
 ```js
 const options = { rawApiData: true }; //default: false
 const videoInfo = await ytAPI.getVideoInfo(apiKey, videoId, options, apiOptions)
@@ -62,26 +65,30 @@ You can modify api request by passing `apiOptions` argument. Default used are:
 
 ```js
 const apiOptions = {
-  part: "snippet, contentDetails",
-}
+  part: "snippet, contentDetails"
+};
 ```
 
 See additional options in
- Google [documentation](https://developers.google.com/youtube/v3/docs/videos/list).
+Google [documentation](https://developers.google.com/youtube/v3/docs/videos/list).
 
 ## YT API Errors:
-For all encounter [API error messages](https://developers.google.com/youtube/v3/docs/errors) the module throws an error.  
+
+For all encounter [API error messages](https://developers.google.com/youtube/v3/docs/errors) the module throws an error.
 
 ## Tests
+
 Tests are made against real YT data, so for performing testing you need working google apikey and put it to `./test/key.json` file.
-Use `.key-tmeplate.json` as reference. 
+Use `.key-tmeplate.json` as reference.
 
 ## Limitations
+
 Due to access via api key getting private video information is limitted.
 
 ## Credits
+
 * [google-api-nodejs-client](https://github.com/google/google-api-nodejs-client)
 
 ## License
-MIT © [qaraluch](https://github.com/qaraluch)
 
+MIT © [qaraluch](https://github.com/qaraluch)
